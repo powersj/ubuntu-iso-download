@@ -1,0 +1,24 @@
+name: ubuntu-iso
+summary: Download the latest Ubuntu ISOs.
+description: |
+  TODO
+
+version: git
+grade: stable
+confinement: strict
+environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+
+apps:
+    ubuntu-iso:
+        command: bin/ubuntu-iso
+        plugs:
+            - home
+            - network
+
+parts:
+    ubuntu-iso:
+        plugin: python
+        source: https://github.com/powersj/ubuntu-iso
+        source-type: git
