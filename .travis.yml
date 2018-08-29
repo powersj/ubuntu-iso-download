@@ -8,4 +8,4 @@ install:
 script:
   - tox
   - python setup.py install
-  - ubuntu-image -h
+  - ubuntu-iso -h

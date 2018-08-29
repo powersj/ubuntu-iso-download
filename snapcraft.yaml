@@ -1,7 +1,11 @@
 name: ubuntu-iso
-summary: Download the latest Ubuntu ISOs.
+summary: Download the latest Ubuntu ISOs
 description: |
-  TODO
+    This is used to download Ubuntu ISOs and verify the download. The
+    SHA256 hash of the ISO is downloaded and the signed GPG file used
+    to verify that the file is valid. Once downloaded, the hash of the
+    ISO is compared to the expected value and either confirmed or the
+    file is deleted.
 
 version: git
 grade: stable

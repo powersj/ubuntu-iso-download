@@ -46,7 +46,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts':
-            ['ubuntu-iso=ubuntu_image.__main__:launch']
+            ['ubuntu-iso=ubuntu_iso.__main__:launch']
     },
     zip_safe=True
 )

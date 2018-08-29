@@ -1,0 +1,4 @@
+python-gnupg
+pyyaml
+requests
+tqdm

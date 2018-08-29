@@ -4,6 +4,8 @@
 
 Download the latest Ubuntu ISOs
 
+This is used to download Ubuntu ISOs and verify the download. The SHA256 hash of the ISO is downloaded and the signed GPG file used to verify that the file is valid. Once downloaded, the hash of the ISO is compared to the expected value and either confirmed or the file is deleted.
+
 ## Install
 
 Users can obtain ubuntu-iso as a snap:
@@ -20,19 +22,27 @@ pip3 install ubuntu-iso
 
 ## Usage
 
-At the very least a user needs to provide the Ubuntu release's codename and flavor to download:
+A user needs to provide at the very last the flavor of ISo to download. By default, this will then download the latest released LTS of that flavor:
 
 ```shell
-ubuntu-iso bionic desktop
+# Latest LTS of Ubuntu desktop
+ubuntu-iso desktop
+```
+
+A specific, supported release can be specified as well:
+
+```shell
+# Ubuntu Xenial of Ubuntu server
+ubuntu-iso server xenial
+# Ubuntu Cosmic of Xubuntu
+ubuntu-iso xubuntu cosmic
 ```
 
 Other options available to a user:
 
-* `--arch` to specify a different architecture (default: amd64)
-* `--daily` to download the daily development ISO
 * `--dry-run` to not download anything and instead show the URL that would be downloaded
 * `--debug` provides additional verbose output
 
 ```shell
-ubuntu-iso <release> <platform> [--arch <arch>] [--daily] [--dry-run] [--debug]
+ubuntu-iso <release> <platform> [release] [--dry-run] [--debug]
 ```

@@ -5,20 +5,20 @@ import argparse
 import logging
 import sys
 
-FLAVORS = [
-    'core',
-    'desktop',
-    'netboot',
-    'server',
-    # https://www.ubuntu.com/download/flavours
-    'budgie',
-    'kubuntu',
-    'kylin',
-    'lubuntu',
-    'mate',
-    'studio',
-    'xubuntu'
-]
+from . import url
+from .iso import ISO
+
+URLS = {
+    'desktop': url.Desktop,
+    'server': url.Server,
+    'budgie': url.Budgie,
+    'kubuntu': url.Kubuntu,
+    'kylin': url.Kylin,
+    'lubuntu': url.Lubuntu,
+    'mate': url.Mate,
+    'studio': url.Studio,
+    'xubuntu': url.Xubuntu,
+}
 
 
 def parse_args():
@@ -26,29 +26,24 @@ def parse_args():
     parser = argparse.ArgumentParser('ubuntu-iso')
 
     parser.add_argument(
-        'codename',
-        help='Ubuntu release codename (e.g. bionic, xenial)'
-    )
-    parser.add_argument(
-        'flavor', choices=FLAVORS,
+        'flavor',
+        choices=URLS.keys(),
         help='flavor name'
     )
     parser.add_argument(
-        '--arch',
-        choices=['amd64', 'arm64', 'i386', 'ppc64el', 's390x'],
-        default='amd64',
-        help='architecture of image (default: amd64)'
+        'codename',
+        nargs='?',
+        default=None,
+        help='Ubuntu release codename (default: latest LTS release)'
     )
     parser.add_argument(
-        '--daily', action='store_true',
-        help='download the latest daily image'
-    )
-    parser.add_argument(
-        '--dry-run', action='store_true',
+        '--dry-run',
+        action='store_true',
         help='do not download and only show link to ISO'
     )
     parser.add_argument(
-        '--debug', action='store_true',
+        '--debug',
+        action='store_true',
         help='additional logging output'
     )
 
@@ -56,7 +51,11 @@ def parse_args():
 
 
 def setup_logging(debug):
-    """Set up logging."""
+    """Set up logging.
+
+    Args:
+        debug: boolean, if additional logging
+    """
     logging.basicConfig(
         stream=sys.stdout,
         format='%(message)s',
@@ -69,13 +68,13 @@ def launch():
     args = parse_args()
     setup_logging(args.debug)
 
-    print(
-        'user wants %s %s %s' % (args.release, args.flavor, args.arch)
-    )
-    if args.daily:
-        print('daily image')
+    iso = ISO(URLS[args.flavor], args.codename)
+
     if args.dry_run:
-        print('dry run set')
+        sys.exit()
+
+    expected_hash = iso.hash()
+    iso.download(expected_hash)
 
 
 if __name__ == '__main__':
