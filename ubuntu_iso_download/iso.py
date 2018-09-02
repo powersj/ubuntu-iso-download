@@ -23,33 +23,20 @@ class ISO:
     """Base ISO."""
 
     def __init__(self, flavor, codename):
-        """TODO."""
+        """Initialize ISO class."""
         self._log = logging.getLogger(__name__)
         self.release = self.get_ubuntu_release(codename)
         self.target = flavor(self.release)
 
     def hash(self):
-        """TODO."""
-        hashes = []
-        with tempfile.TemporaryDirectory() as dirpath:
-            hash_file = self.download_file(self.target.hash_file, dirpath)
-            signed_hash_file = self.download_file(
-                self.target.hash_file_signed,
-                dirpath
-            )
-            hashes = open(hash_file, 'r').read().split('\n')
-            verified = self.verify_gpg_signature(
-                hash_file,
-                signed_hash_file,
-                dirpath
-            )
-
-        if not verified:
+        """Download and verify the hash for the ISO."""
+        hashes = requests.get(self.target.hash_file).content
+        if not self.verify_gpg_signature(hashes, self.target.hash_file_signed):
             self._log.error('Oops: GPG signature verification failed')
             sys.exit(1)
 
         target_hash = ''
-        for entry in hashes:
+        for entry in hashes.decode('utf-8').split('\n'):
             if self.target.filename in entry:
                 target_hash = entry.split(' ')[0]
 
@@ -99,25 +86,6 @@ class ISO:
                 sha256.update(data)
 
         return sha256.hexdigest()
-
-    def download_file(self, file_url, destination_dir):
-        """Download a file to specified directory.
-
-        Args:
-            file_url: string, URL of file to download
-            destination_dir: string, local path to destination
-        Returns:
-            string, local path to file
-
-        """
-        filename = file_url.split('/')[-1]
-        destination = os.path.join(destination_dir, filename)
-
-        self._log.debug('Downloading %s', filename)
-        with open(destination, 'wb') as f:
-            f.write(requests.get(file_url).content)
-
-        return destination
 
     def download_iso(self, iso):
         """Download the ISO with progress bar.
@@ -194,10 +162,10 @@ class ISO:
         except OSError:
             pass
 
-    def verify_gpg_signature(self, file, signed_file, directory):
+    def verify_gpg_signature(self, data, signature_url):
         """Verify GPG signature of a signed file.
 
-        This will setup a new GPG key entry at the directory given to
+        This will setup a new GPG key entry in a temporary directory to
         prevent needing to add the key to the user's keyring. The
         Ubuntu ISO CD singing key will get imported to the keyring.
         Finally, the signed file's signature will be verified with the
@@ -206,18 +174,20 @@ class ISO:
         The signing key is 0xD94AA3F0EFE21092
 
         Args:
-            file: string, file to verify
-            signed_file: string, path to signed file
-            directory: string, directory to setup GPG keys
+            data: string, string to verify
+            signature_url: string, URL to signature of data
 
         Return:
             boolean, if verification succeeds
 
         """
         self._log.debug('Verifying GPG signature')
-        gpg = gnupg.GPG(gnupghome=directory)
-        gpg.import_keys(UbuntuCDSigningKey)
-        if not gpg.verify_file(open(signed_file, 'rb'), file):
-            return False
+        with tempfile.TemporaryDirectory() as directory_name:
+            gpg = gnupg.GPG(gnupghome=directory_name)
+            gpg.import_keys(UbuntuCDSigningKey)
 
-        return True
+            sig_file = os.path.join(directory_name, 'signature.gpg')
+            with open(sig_file, 'wb') as f:
+                f.write(requests.get(signature_url).content)
+
+            return gpg.verify_data(sig_file, data)
