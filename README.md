@@ -1,6 +1,6 @@
-# Ubuntu ISO
+# Ubuntu ISO Download
 
-[![Build Status](https://travis-ci.org/powersj/ubuntu-iso.svg?branch=master)](https://travis-ci.org/powersj/ubuntu-iso) [![Snap Status](https://build.snapcraft.io/badge/powersj/ubuntu-iso.svg)](https://build.snapcraft.io/user/powersj/ubuntu-iso)
+[![Build Status](https://travis-ci.org/powersj/ubuntu-iso-download.svg?branch=master)](https://travis-ci.org/powersj/ubuntu-iso-download) [![Snap Status](https://build.snapcraft.io/badge/powersj/ubuntu-iso-download.svg)](https://build.snapcraft.io/user/powersj/ubuntu-iso-download)
 
 Download the latest Ubuntu ISOs
 
@@ -8,16 +8,16 @@ This is used to download Ubuntu ISOs and verify the download. The SHA256 hash of
 
 ## Install
 
-Users can obtain ubuntu-iso as a snap:
+Users can obtain ubuntu-iso-download as a snap:
 
 ```shell
-snap install ubuntu-iso
+snap install ubuntu-iso-download
 ```
 
 Or via PyPI:
 
 ```shell
-pip3 install ubuntu-iso
+pip3 install ubuntu-iso-download
 ```
 
 ## Usage
@@ -26,16 +26,16 @@ A user needs to provide at the very last the flavor of ISo to download. By defau
 
 ```shell
 # Latest LTS of Ubuntu desktop
-ubuntu-iso desktop
+ubuntu-iso-download desktop
 ```
 
 A specific, supported release can be specified as well:
 
 ```shell
 # Ubuntu Xenial of Ubuntu server
-ubuntu-iso server xenial
+ubuntu-iso-download server xenial
 # Ubuntu Cosmic of Xubuntu
-ubuntu-iso xubuntu cosmic
+ubuntu-iso-download xubuntu cosmic
 ```
 
 Other options available to a user:
@@ -44,5 +44,5 @@ Other options available to a user:
 * `--debug` provides additional verbose output
 
 ```shell
-ubuntu-iso <release> <platform> [release] [--dry-run] [--debug]
+ubuntu-iso-download <platform> [release] [--dry-run] [--debug]
 ```

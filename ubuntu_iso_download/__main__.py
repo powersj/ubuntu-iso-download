@@ -1,5 +1,5 @@
-# This file is part of ubuntu-iso. See LICENSE for license infomation.
-"""Ubuntu ISO module."""
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
+"""Ubuntu ISO Download main module."""
 
 import argparse
 import logging
@@ -64,7 +64,7 @@ def setup_logging(debug):
 
 
 def launch():
-    """Launch ubuntu-iso."""
+    """Launch ubuntu-iso-download."""
     args = parse_args()
     setup_logging(args.debug)
 

@@ -1,5 +1,5 @@
-# This file is part of ubuntu-iso. See LICENSE for license infomation.
-"""Ubuntu ISO Key file.
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
+"""Ubuntu ISO Download Key class.
 
 This is the signing key used for Ubuntu CD Images:
 

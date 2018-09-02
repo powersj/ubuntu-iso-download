@@ -1,4 +1,4 @@
-name: ubuntu-iso
+name: ubuntu-iso-download
 summary: Download the latest Ubuntu ISOs
 description: |
     This is used to download Ubuntu ISOs and verify the download. The
@@ -15,14 +15,14 @@ environment:
     LANG: C.UTF-8
 
 apps:
-    ubuntu-iso:
-        command: bin/ubuntu-iso
+    ubuntu-iso-download:
+        command: bin/ubuntu-iso-download
         plugs:
             - home
             - network
 
 parts:
-    ubuntu-iso:
+    ubuntu-iso-download:
         plugin: python
-        source: https://github.com/powersj/ubuntu-iso
+        source: https://github.com/powersj/ubuntu-iso-download
         source-type: git

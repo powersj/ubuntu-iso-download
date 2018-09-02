@@ -1,5 +1,5 @@
-# This file is part of ubuntu-iso. See LICENSE for license infomation.
-"""Ubuntu ISO file."""
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
+"""Ubuntu ISO Download ISO class."""
 
 import hashlib
 import logging

@@ -1,5 +1,5 @@
-# This file is part of ubuntu-iso. See LICENSE for license infomation.
-"""Ubuntu Release module.
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
+"""Ubuntu ISO Download Release class.
 
 Similar to the 'distro-info' package, this class parses and contains
 the Ubuntu release information. Instead of a static data file, this

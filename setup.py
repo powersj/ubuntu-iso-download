@@ -14,16 +14,16 @@ with open(README_FILE, 'r') as readme:
     README_TEXT = readme.read()
 
 setup(
-    name='ubuntu-iso',
+    name='ubuntu-iso-download',
     version='18.0',
     description='Download the latest Ubuntu ISOs.',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
     author='Joshua Powers',
     author_email='josh.powers@canonical.com',
-    url='https://github.com/powersj/ubuntu-iso',
+    url='https://github.com/powersj/ubuntu-iso-download',
     download_url=(
-        'https://github.com/powersj/ubuntu-iso/tarball/master'
+        'https://github.com/powersj/ubuntu-iso-download/tarball/master'
     ),
     install_requires=REQUIREMENTS,
     python_requires='>=3.4',
@@ -46,7 +46,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts':
-            ['ubuntu-iso=ubuntu_iso.__main__:launch']
+            ['ubuntu-iso-download=ubuntu_iso_download.__main__:launch']
     },
     zip_safe=True
 )

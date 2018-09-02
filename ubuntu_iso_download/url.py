@@ -1,5 +1,5 @@
-# This file is part of ubuntu-iso. See LICENSE for license infomation.
-"""Ubuntu ISO URL module.
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
+"""Ubuntu ISO Download URL class.
 
 This is used to generate a URL for a specific flavor and release of
 Ubuntu (desktop or server) or any recognized flavor. The flavors list
