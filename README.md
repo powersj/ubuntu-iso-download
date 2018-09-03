@@ -11,7 +11,7 @@ This is used to download Ubuntu ISOs and verify the download. The SHA256 hash of
 Users can obtain ubuntu-iso-download as a snap:
 
 ```shell
-snap install ubuntu-iso-download
+snap install ubuntu-iso-download --classic
 ```
 
 Or via PyPI:
