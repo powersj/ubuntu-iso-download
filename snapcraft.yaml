@@ -8,6 +8,7 @@ description: |
     file is deleted.
 
 version: git
+version-script: git rev-parse --short HEAD
 grade: stable
 confinement: strict
 environment:
