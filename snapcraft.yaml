@@ -9,7 +9,7 @@ description: |
 
 version: git
 grade: stable
-confinement: classic
+confinement: strict
 environment:
     LC_ALL: C.UTF-8
     LANG: C.UTF-8
@@ -17,11 +17,19 @@ environment:
 apps:
     ubuntu-iso-download:
         command: bin/ubuntu-iso-download
+        plugs:
+            - network
+            - network-bind
+            - home
 
 parts:
     ubuntu-iso-download:
         plugin: python
         source: https://github.com/powersj/ubuntu-iso-download
         source-type: git
+    gpg:
+        plugin: nil
         stage-packages:
-            - gpgv2
+            - gnupg
+        stage:
+            - usr/bin/gpg
