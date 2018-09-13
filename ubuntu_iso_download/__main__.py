@@ -27,7 +27,7 @@ def parse_args():
 
     parser.add_argument(
         'flavor',
-        choices=URLS.keys(),
+        choices=sorted(URLS.keys()),
         help='flavor name'
     )
     parser.add_argument(
@@ -73,8 +73,7 @@ def launch():
     if args.dry_run:
         sys.exit()
 
-    expected_hash = iso.hash()
-    iso.download(expected_hash)
+    iso.download()
 
 
 if __name__ == '__main__':

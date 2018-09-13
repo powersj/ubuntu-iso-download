@@ -4,7 +4,21 @@
 
 Download the latest Ubuntu ISOs
 
-This is used to download Ubuntu ISOs and verify the download. The SHA256 hash of the ISO is downloaded and the signed GPG file used to verify that the file is valid. Once downloaded, the hash of the ISO is compared to the expected value and either confirmed or the file is deleted.
+This is used to download Ubuntu ISOs and verify hash of the download. The following flavors are available:
+
+* Ubuntu Desktop
+* Ubuntu Server
+* Kubuntu
+* Lubuntu
+* Ubuntu Budgie
+* Ubuntu Kylin
+* Ubuntu MATE
+* Ubuntu Studio
+* Xubuntu
+
+The release is the codename and must be a currently supported release and defaults to the latest LTS. Only the amd64 architecture is supported for download.
+
+For verification, the SHA-256 hash file and signed GPG has file are both downloaded. The signed GPG file is used to verify that the hash file is valid and the expected hash saved. Once the ISO is downloaded, the SHA-256 hash is calculated and compared to the expected value. If a mismatch occurs the download ISO is deleted.
 
 ## Install
 
@@ -25,8 +39,9 @@ pip3 install ubuntu-iso-download
 A user needs to provide at the very last the flavor of ISo to download. By default, this will then download the latest released LTS of that flavor:
 
 ```shell
-# Latest LTS of Ubuntu desktop
+# Latest LTS of Ubuntu desktop and server
 ubuntu-iso-download desktop
+ubuntu-iso-download server
 ```
 
 A specific, supported release can be specified as well:

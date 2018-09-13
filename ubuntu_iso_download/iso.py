@@ -43,28 +43,24 @@ class ISO:
         if not target_hash:
             self._log.error('Oops: No ISO hash found')
 
+        self._log.debug(target_hash)
         return target_hash
 
-    def download(self, expected_hash):
+    def download(self):
         """Download the ISO, calculate hash, and and verify it.
 
         If the expected hash does not match the local hash the
         downloaded ISO will be deleted.
         """
         local_iso = self.download_iso(self.target)
-        local_hash = self.calc_sha256(local_iso)
 
-        self._log.debug('Verifying SHA256SUM')
-        if expected_hash != local_hash:
-            self._log.error(
-                'Oops: SHA256 mismatch\n'
-                'Expected: %s\n'
-                'Actual %s', expected_hash, local_hash
-            )
+        self._log.debug('Verifying SHA-256')
+        if self.hash() != self.calc_sha256(local_iso):
+            self._log.error('Oops: SHA-256 hash mismatch!')
             self.remove_file(local_iso)
             sys.exit(1)
 
-        self._log.info('Download complete and successfully verified')
+        self._log.debug('Download complete and successfully verified')
 
     def calc_sha256(self, filename):
         """Calculate SHA256 of a given filename.
@@ -75,8 +71,6 @@ class ISO:
             SHA256 digest
 
         """
-        self._log.debug('Computing SHA256SUM')
-
         sha256 = hashlib.sha256()
         with open(filename, 'rb') as file:
             while True:
@@ -85,6 +79,7 @@ class ISO:
                     break
                 sha256.update(data)
 
+        self._log.debug(sha256.hexdigest())
         return sha256.hexdigest()
 
     def download_iso(self, iso):
@@ -101,7 +96,7 @@ class ISO:
             string, ISO filename
 
         """
-        self._log.info('Downloading %s', iso.filename)
+        self._log.info('Downloading %s from %s', iso.filename, iso.dir)
         response = requests.get(iso.url, stream=True)
         chunk_size = 1024 * 1024
 
@@ -162,7 +157,8 @@ class ISO:
         except OSError:
             pass
 
-    def verify_gpg_signature(self, data, signature_url):
+    @staticmethod
+    def verify_gpg_signature(data, signature_url):
         """Verify GPG signature of a signed file.
 
         This will setup a new GPG key entry in a temporary directory to
@@ -181,7 +177,6 @@ class ISO:
             boolean, if verification succeeds
 
         """
-        self._log.debug('Verifying GPG signature')
         with tempfile.TemporaryDirectory() as directory_name:
             gpg = gnupg.GPG(gnupghome=directory_name)
             gpg.import_keys(UbuntuCDSigningKey)

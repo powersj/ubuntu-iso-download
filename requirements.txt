@@ -1,4 +1,4 @@
-python-gnupg
-pyyaml
-requests
-tqdm
+python-gnupg==0.4.3
+pyyaml==3.13
+requests==2.19.1
+tqdm==4.26.0

@@ -19,3 +19,6 @@ cover
 # Snap
 *.tar.bz2
 *.snap
+
+# ISOs
+*.iso

@@ -15,7 +15,7 @@ with open(README_FILE, 'r') as readme:
 
 setup(
     name='ubuntu-iso-download',
-    version='18.0',
+    version='18.1',
     description='Download the latest Ubuntu ISOs.',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
@@ -42,7 +42,7 @@ setup(
         "Topic :: Software Development :: Quality Assurance",
         "Topic :: Software Development :: Testing",
     ],
-    keywords=['ubuntu', 'iso'],
+    keywords=['ubuntu', 'download', 'iso'],
     packages=find_packages(),
     entry_points={
         'console_scripts':

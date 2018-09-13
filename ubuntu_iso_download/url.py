@@ -57,8 +57,8 @@ class URL:
 
     def __repr__(self):
         """Return string representation of ISO."""
-        return '%s ISO with %s\n%s' % (
-            self.name, self.release, self.dir
+        return '%s ISO on %s' % (
+            self.name, self.release
         )
 
     @property
