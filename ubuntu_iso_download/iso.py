@@ -22,11 +22,15 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 class ISO:
     """Base ISO."""
 
-    def __init__(self, flavor, codename):
+    def __init__(self, flavor, codename, mirror=None):
         """Initialize ISO class."""
         self._log = logging.getLogger(__name__)
         self.release = self.get_ubuntu_release(codename)
-        self.target = flavor(self.release)
+        self.target = flavor(self.release, mirror=mirror)
+
+    def __repr__(self):
+        """Return string representation of ISO."""
+        return str(self.target)
 
     def hash(self):
         """Download and verify the hash for the ISO."""

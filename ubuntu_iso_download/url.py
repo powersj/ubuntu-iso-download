@@ -47,13 +47,13 @@ class URL:
     name = None
     variety = 'desktop'
 
-    def __init__(self, release, arch='amd64'):
+    def __init__(self, release, arch='amd64', mirror=''):
         """Initialize base URL."""
         self._log = logging.getLogger(__name__)
 
         self.arch = arch
         self.release = release
-        self._log.info(self)
+        self.mirror = mirror.strip('/')
 
     def __repr__(self):
         """Return string representation of ISO."""
@@ -138,7 +138,7 @@ class Server(URL):
     flavor = 'ubuntu-server'
     variety = 'live-server'
 
-    def __init__(self, release, arch='amd64'):
+    def __init__(self, release, arch='amd64', mirror=''):
         """Initialize Server object.
 
         The released versions's flavor is 'ubuntu' instead of
@@ -148,7 +148,7 @@ class Server(URL):
         (d-i). After 18.04, it uses subiquity and is known as
         'server-live'.
         """
-        super().__init__(release, arch)
+        super().__init__(release, arch, mirror)
 
         if not self.release.is_dev:
             self.flavor = 'ubuntu'
@@ -159,7 +159,7 @@ class Server(URL):
     def _supported_url(self):
         """Return supported release url."""
         return '{base_url}/{version}/{filename}'.format(
-            base_url=URL_RELEASES,
+            base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
             filename=self.filename
         )
@@ -174,7 +174,7 @@ class Desktop(URL):
     def _supported_url(self):
         """Return supported release url."""
         return '{base_url}/{version}/{filename}'.format(
-            base_url=URL_RELEASES,
+            base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
             filename=self.filename
         )
@@ -186,12 +186,12 @@ class Budgie(URL):
     name = 'Ubuntu Budgie'
     flavor = 'ubuntu-budgie'
 
-    def __init__(self, release, arch='amd64'):
+    def __init__(self, release, arch='amd64', mirror=''):
         """Initialize Budgie object.
 
         Budgie was not supported until the 18.04 LTS.
         """
-        super().__init__(release, arch)
+        super().__init__(release, arch, mirror)
 
         if self.release.year < 18:
             self._log.error(
@@ -236,12 +236,12 @@ class Studio(URL):
     flavor = 'ubuntustudio'
     variety = 'dvd'
 
-    def __init__(self, release, arch='amd64'):
+    def __init__(self, release, arch='amd64', mirror=''):
         """Initialize Studio object.
 
         The 18.04 release was not known as an LTS release.
         """
-        super().__init__(release, arch)
+        super().__init__(release, arch, mirror)
 
         if self.release.year == 18 and self.release.month == 4:
             self._log.debug('18.04 was not an LTS for Ubuntu Studio.')

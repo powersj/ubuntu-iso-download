@@ -46,6 +46,14 @@ def parse_args():
         action='store_true',
         help='additional logging output'
     )
+    parser.add_argument(
+        '--mirror',
+        default='',
+        help=(
+            'mirror for supported desktop and server releases; '
+            'see https://launchpad.net/ubuntu/+cdmirrors'
+        )
+    )
 
     return parser.parse_args()
 
@@ -68,9 +76,11 @@ def launch():
     args = parse_args()
     setup_logging(args.debug)
 
-    iso = ISO(URLS[args.flavor], args.codename)
+    iso = ISO(URLS[args.flavor], args.codename, mirror=args.mirror)
+    print(iso)
 
     if args.dry_run:
+        print(iso.target.url)
         sys.exit()
 
     iso.download()
