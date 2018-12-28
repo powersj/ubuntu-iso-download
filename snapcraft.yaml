@@ -45,6 +45,8 @@ parts:
         plugin: python
         source: https://github.com/powersj/ubuntu-iso-download
         source-type: git
+        stage-packages:
+            - ubuntu-cloudimage-keyring
     gpg:
         plugin: nil
         stage-packages:

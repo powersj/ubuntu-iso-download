@@ -1,5 +1,13 @@
 # This file is part of ubuntu-iso-download. See LICENSE for license infomation.
-"""Ubuntu ISO Download ISO class."""
+"""Ubuntu ISO Download ISO class.
+
+This is the signing key used for Ubuntu CD Images:
+
+    pub   rsa4096 2012-05-11 [SC]
+    Ubuntu CD Image Automatic Signing Key (2012) <cdimage@ubuntu.com>
+    843938DF228D22F7B3742BC0D94AA3F0EFE21092
+
+"""
 
 import hashlib
 import logging
@@ -11,7 +19,6 @@ import gnupg
 import requests
 from tqdm import tqdm
 
-from .key import UbuntuCDSigningKey
 from .release import UbuntuReleaseData
 
 logging.getLogger("gnupg").setLevel(logging.WARNING)
@@ -27,10 +34,28 @@ class ISO:
         self._log = logging.getLogger(__name__)
         self.release = self.get_ubuntu_release(codename)
         self.target = flavor(self.release, mirror=mirror)
+        self.ubuntu_cd_public_gpg = self._read_gpg_key()
 
     def __repr__(self):
         """Return string representation of ISO."""
         return str(self.target)
+
+    def _read_gpg_key(self):
+        """Read the public GPG key used for signing CDs."""
+        keyring_path = '/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg'
+        if os.getenv('SNAP'):
+            keyring_path = os.path.join(os.getenv('SNAP'), keyring_path)
+
+        if not os.path.isfile(keyring_path):
+            self._log.error(
+                'Oops: public GPG key not found at: %s', keyring_path
+            )
+            sys.exit(1)
+
+        with open(keyring_path, 'rb') as keyring:
+            gpg_key = keyring.read()
+
+        return gpg_key
 
     def hash(self):
         """Download and verify the hash for the ISO."""
@@ -161,8 +186,7 @@ class ISO:
         except OSError:
             pass
 
-    @staticmethod
-    def verify_gpg_signature(data, signature_url):
+    def verify_gpg_signature(self, data, signature_url):
         """Verify GPG signature of a signed file.
 
         This will setup a new GPG key entry in a temporary directory to
@@ -183,7 +207,7 @@ class ISO:
         """
         with tempfile.TemporaryDirectory() as directory_name:
             gpg = gnupg.GPG(gnupghome=directory_name)
-            gpg.import_keys(UbuntuCDSigningKey)
+            gpg.import_keys(self.ubuntu_cd_public_gpg)
 
             sig_file = os.path.join(directory_name, 'signature.gpg')
             with open(sig_file, 'wb') as f:
