@@ -15,7 +15,7 @@ with open(README_FILE, 'r') as readme:
 
 setup(
     name='ubuntu-iso-download',
-    version='18.2',
+    version='18.3',
     description='Download the latest Ubuntu ISOs.',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
