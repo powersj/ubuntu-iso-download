@@ -7,6 +7,9 @@ This is the signing key used for Ubuntu CD Images:
     Ubuntu CD Image Automatic Signing Key (2012) <cdimage@ubuntu.com>
     843938DF228D22F7B3742BC0D94AA3F0EFE21092
 
+It is found in the ubuntu-archive-keyring.gpg file of the
+ubuntu-keyring package in the Ubuntu archive.
+
 """
 
 import hashlib
@@ -42,9 +45,11 @@ class ISO:
 
     def _read_gpg_key(self):
         """Read the public GPG key used for signing CDs."""
-        keyring_path = '/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg'
+        keyring_path = 'usr/share/keyrings/ubuntu-archive-keyring.gpg'
         if os.getenv('SNAP'):
             keyring_path = os.path.join(os.getenv('SNAP'), keyring_path)
+        else:
+            keyring_path = os.path.join('/', keyring_path)
 
         if not os.path.isfile(keyring_path):
             self._log.error(
@@ -66,7 +71,7 @@ class ISO:
 
         target_hash = ''
         for entry in hashes.decode('utf-8').split('\n'):
-            if self.target.filename in entry:
+            if self.target.variety in entry and self.target.arch in entry:
                 target_hash = entry.split(' ')[0]
 
         if not target_hash:

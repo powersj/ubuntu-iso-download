@@ -61,7 +61,7 @@ class UbuntuRelease:
         elif self.month < other.month:
             return False
         elif self.month > other.month:
-            return False
+            return True
         elif self.point < other.point:
             return False
         elif self.point > other.point:
@@ -78,7 +78,7 @@ class UbuntuRelease:
         elif self.month < other.month:
             return False
         elif self.month > other.month:
-            return False
+            return True
         elif self.point < other.point:
             return False
         elif self.point > other.point:

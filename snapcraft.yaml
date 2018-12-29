@@ -43,10 +43,14 @@ apps:
 parts:
     ubuntu-iso-download:
         plugin: python
-        source: https://github.com/powersj/ubuntu-iso-download
+        source: .
         source-type: git
+    keyring:
+        plugin: nil
         stage-packages:
-            - ubuntu-cloudimage-keyring
+            - ubuntu-keyring
+        stage:
+            - usr/share/keyrings/ubuntu-archive-keyring.gpg
     gpg:
         plugin: nil
         stage-packages:
