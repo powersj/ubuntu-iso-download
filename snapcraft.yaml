@@ -43,7 +43,7 @@ apps:
 parts:
     ubuntu-iso-download:
         plugin: python
-        source: .
+        source: https://github.com/powersj/ubuntu-iso-download
         source-type: git
     keyring:
         plugin: nil
