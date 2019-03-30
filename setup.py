@@ -1,23 +1,46 @@
+# This file is part of ubuntu-iso-download. See LICENSE for license infomation.
 """Setup.py file."""
 
 import os
 from setuptools import find_packages, setup
 
-PWD = os.path.abspath(os.path.dirname(__name__))
-REQUIREMENTS_FILE = os.path.join(PWD, 'requirements.txt')
-REQUIREMENTS = []
-with open(REQUIREMENTS_FILE, 'r') as req_file:
-    REQUIREMENTS = req_file.read().splitlines()
 
-README_FILE = os.path.join(PWD, 'README.md')
-with open(README_FILE, 'r') as readme:
-    README_TEXT = readme.read()
+def read_readme():
+    """Read and return text of README.md."""
+    pwd = os.path.abspath(os.path.dirname(__name__))
+    readme_file = os.path.join(pwd, 'README.md')
+    with open(readme_file, 'r') as readme:
+        readme_txt = readme.read()
+
+    return readme_txt
+
+
+def gather_deps():
+    """Read requirements.txt and pre-process for setup.
+
+    Returns:
+         list of packages and dependency links.
+
+    """
+    default = open('requirements.txt', 'r').readlines()
+    new_pkgs = []
+    links = []
+    for resource in default:
+        if 'git+https' in resource.strip():
+            links.append(resource)
+        else:
+            new_pkgs.append(resource)
+
+    return new_pkgs, links
+
+
+PKGS, LINKS = gather_deps()
 
 setup(
     name='ubuntu-iso-download',
     version='18.3',
     description='Download the latest Ubuntu ISOs.',
-    long_description=README_TEXT,
+    long_description=read_readme(),
     long_description_content_type='text/markdown',
     author='Joshua Powers',
     author_email='josh.powers@canonical.com',
@@ -25,8 +48,9 @@ setup(
     download_url=(
         'https://github.com/powersj/ubuntu-iso-download/tarball/master'
     ),
-    install_requires=REQUIREMENTS,
     python_requires='>=3.4',
+    install_requires=PKGS,
+    dependency_links=LINKS,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
