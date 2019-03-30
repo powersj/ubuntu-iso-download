@@ -22,7 +22,7 @@ import gnupg
 import requests
 from tqdm import tqdm
 
-from .release import UbuntuReleaseData
+from ubuntu_release_info import data as UbuntuReleaseInfo
 
 logging.getLogger("gnupg").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -162,7 +162,7 @@ class ISO:
             UbuntuRelease object
 
         """
-        ubuntu = UbuntuReleaseData()
+        ubuntu = UbuntuReleaseInfo.Data()
 
         if not codename:
             return ubuntu.lts

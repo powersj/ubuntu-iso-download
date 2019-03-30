@@ -4,8 +4,9 @@ SETUP  := $(PYTHON) setup.py
 .PHONY: clean install publish snap test venv
 
 clean:
-	$(SETUP) clean
-	rm -rf .tox .eggs *.egg-info *.snap *.tar.bz2 build dist venv
+#	$(SETUP) clean
+	rm -f .coverage .eggs *.egg-info *.iso *.snap *.tar.bz2
+	rm -rf build/ dist/ .pytest_cache/ .tox/ venv/
 	@find . -regex '.*\(__pycache__\|\.py[co]\)' -delete
 
 install:

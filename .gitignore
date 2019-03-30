@@ -12,6 +12,7 @@ venv
 .coverage
 .noseids
 cover
+htmlcov
 
 # Collect
 *.tar.gz

@@ -43,8 +43,8 @@ class URL:
     filenames, etc.).
     """
 
-    flavor = None
-    name = None
+    flavor = 'Unknown'
+    name = 'Unknown'
     variety = 'desktop'
 
     def __init__(self, release, arch='amd64', mirror=''):
