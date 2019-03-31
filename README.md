@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/powersj/ubuntu-iso-download.svg?branch=master)](https://travis-ci.org/powersj/ubuntu-iso-download) [![Snap Status](https://build.snapcraft.io/badge/powersj/ubuntu-iso-download.svg)](https://build.snapcraft.io/user/powersj/ubuntu-iso-download)
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/ubuntu-iso-download)
+
 Download the latest Ubuntu ISOs
 
 This is used to download Ubuntu ISOs and verify hash of the download. The following flavors are available:

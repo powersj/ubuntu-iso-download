@@ -30,7 +30,7 @@ DISCO = Release('disco', True, False, '19.04', 4, 19)
 
 
 def test_url():
-    """TODO."""
+    """Test basic URL."""
     arch = 'amd64'
     release = BIONIC
 
@@ -50,7 +50,7 @@ def test_url():
 
 
 def test_mirror():
-    """TODO."""
+    """Test customized mirror."""
     arch = 'ppc64el'
     release = DISCO
     mirror = 'http://mirror.wiru.co.za/ubuntu-releases/'
@@ -63,7 +63,7 @@ def test_mirror():
 
 
 def test_desktop_stable():
-    """TODO."""
+    """Test desktop stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -78,7 +78,7 @@ def test_desktop_stable():
 
 
 def test_desktop_devel():
-    """TODO."""
+    """Test desktop devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -94,7 +94,7 @@ def test_desktop_devel():
 
 
 def test_server_stable_old():
-    """Pre-18.04."""
+    """Pre-18.04 server ISO."""
     arch = 'amd64'
     release = XENIAL
 
@@ -109,7 +109,7 @@ def test_server_stable_old():
 
 
 def test_server_stable():
-    """TODO."""
+    """Test stable server url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -124,7 +124,7 @@ def test_server_stable():
 
 
 def test_server_devel():
-    """TODO."""
+    """Test devel server url."""
     arch = 'amd64'
     release = DISCO
 
@@ -140,7 +140,7 @@ def test_server_devel():
 
 
 def test_budgie_stable():
-    """TODO."""
+    """Test budgie stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -151,7 +151,7 @@ def test_budgie_stable():
 
 
 def test_budgie_devel():
-    """TODO."""
+    """Test budgie devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -162,7 +162,7 @@ def test_budgie_devel():
 
 
 def test_budgie_unsupported():
-    """TODO."""
+    """Test budgie unsupported release."""
     arch = 'amd64'
     release = XENIAL
 
@@ -171,7 +171,7 @@ def test_budgie_unsupported():
 
 
 def test_kubuntu_stable():
-    """TODO."""
+    """Test kubuntu stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -182,7 +182,7 @@ def test_kubuntu_stable():
 
 
 def test_kubuntu_devel():
-    """TODO."""
+    """Test kubuntu devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -193,7 +193,7 @@ def test_kubuntu_devel():
 
 
 def test_kylin_stable():
-    """TODO."""
+    """Test kylin stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -204,7 +204,7 @@ def test_kylin_stable():
 
 
 def test_kylin_devel():
-    """TODO."""
+    """Test kylin devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -215,7 +215,7 @@ def test_kylin_devel():
 
 
 def test_lubuntu_stable():
-    """TODO."""
+    """Test lubuntu stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -226,7 +226,7 @@ def test_lubuntu_stable():
 
 
 def test_lubuntu_devel():
-    """TODO."""
+    """Test lubuntu devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -237,7 +237,7 @@ def test_lubuntu_devel():
 
 
 def test_mate_stable():
-    """TODO."""
+    """Test mate stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -248,7 +248,7 @@ def test_mate_stable():
 
 
 def test_mate_devel():
-    """TODO."""
+    """Test mate devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -259,7 +259,7 @@ def test_mate_devel():
 
 
 def test_studio_stable():
-    """TODO."""
+    """Test studio stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -270,7 +270,7 @@ def test_studio_stable():
 
 
 def test_studio_devel():
-    """TODO."""
+    """Test studio devel url."""
     arch = 'amd64'
     release = DISCO
 
@@ -285,7 +285,7 @@ def test_studio_devel():
 
 
 def test_xubuntu_stable():
-    """TODO."""
+    """Test xubuntu stable url."""
     arch = 'amd64'
     release = BIONIC
 
@@ -296,7 +296,7 @@ def test_xubuntu_stable():
 
 
 def test_xubuntu_devel():
-    """TODO."""
+    """Test xubuntu devel rul."""
     arch = 'amd64'
     release = DISCO
 
