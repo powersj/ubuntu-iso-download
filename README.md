@@ -10,6 +10,7 @@ This is used to download Ubuntu ISOs and verify hash of the download. The follow
 
 * Ubuntu Desktop
 * Ubuntu Server
+* Ubuntu Netboot (mini.iso)
 * Kubuntu
 * Lubuntu
 * Ubuntu Budgie
@@ -20,7 +21,7 @@ This is used to download Ubuntu ISOs and verify hash of the download. The follow
 
 The release is the codename and must be a currently supported release and defaults to the latest LTS. Only the amd64 architecture is supported for download.
 
-For verification, the SHA-256 hash file and signed GPG has file are both downloaded. The signed GPG file is used to verify that the hash file is valid and the expected hash saved. Once the ISO is downloaded, the SHA-256 hash is calculated and compared to the expected value. If a mismatch occurs the download ISO is deleted.
+For verification, the SHA-256 hash file and signed GPG hash file are both downloaded. The signed GPG file is used to verify that the hash file is valid and the expected hash saved. Once the ISO is downloaded, the SHA-256 hash is calculated and compared to the expected value. If a mismatch occurs the download ISO is deleted.
 
 ## Install
 
