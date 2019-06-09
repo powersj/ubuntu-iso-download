@@ -38,7 +38,7 @@ PKGS, LINKS = gather_deps()
 
 setup(
     name='ubuntu-iso-download',
-    version='19.1',
+    version='19.2',
     description='Download the latest Ubuntu ISOs.',
     long_description=read_readme(),
     long_description_content_type='text/markdown',
