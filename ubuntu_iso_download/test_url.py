@@ -3,7 +3,7 @@
 import pytest
 
 from .url import (
-    Budgie, Desktop, Kubuntu, Kylin, Lubuntu, Mate,
+    Budgie, Desktop, Kubuntu, Kylin, Lubuntu, Mate, Netboot,
     Server, Studio, URL, Xubuntu
 )
 
@@ -60,6 +60,19 @@ def test_mirror():
     assert url.release == release
     assert url.mirror == 'http://mirror.wiru.co.za/ubuntu-releases'
     assert str(url) == 'Unknown ISO on %s' % release
+
+
+def test_mirror_netboot():
+    """Test customized mirror."""
+    arch = 'amd64'
+    release = DISCO
+    mirror = 'http://mirror.wiru.co.za/ubuntu-releases'
+
+    url = Netboot(release, arch, mirror)
+    assert url.arch == arch
+    assert url.release == release
+    assert url.mirror == 'http://mirror.wiru.co.za/ubuntu-releases'
+    assert str(url) == 'Ubuntu Netboot ISO on %s' % release
 
 
 def test_desktop_stable():
@@ -137,6 +150,51 @@ def test_server_devel():
         'http://cdimage.ubuntu.com/ubuntu-server/'
         'daily-live/current/disco-live-server-amd64.iso'
     )
+
+
+def test_netboot_stable():
+    """Test stable netboot url."""
+    arch = 'amd64'
+    release = BIONIC
+
+    url = Netboot(release, arch)
+    assert url.arch == arch
+    assert url.release == release
+    assert url.mirror == ''
+    assert str(url) == 'Ubuntu Netboot ISO on %s' % release
+    assert url.dir == (
+        'http://archive.ubuntu.com/ubuntu/dists/bionic/main/'
+        'installer-amd64/current/images'
+    )
+    assert url.url == (
+        'http://archive.ubuntu.com/ubuntu/dists/bionic/main/'
+        'installer-amd64/current/images/netboot/mini.iso'
+    )
+
+
+def test_netboot_devel():
+    """Test devel netboot url."""
+    arch = 'i386'
+    release = DISCO
+
+    url = Netboot(release, arch)
+    assert url.arch == arch
+    assert url.release == release
+    assert url.mirror == ''
+    assert str(url) == 'Ubuntu Netboot ISO on %s' % release
+    assert url.url == (
+        'http://archive.ubuntu.com/ubuntu/dists/disco/main/'
+        'installer-i386/current/images/netboot/mini.iso'
+    )
+
+
+def test_netboot_ppc64el():
+    """Test devel netboot on bad arch."""
+    arch = 'ppc64el'
+    release = DISCO
+
+    with pytest.raises(SystemExit):
+        Netboot(release, arch)
 
 
 def test_budgie_stable():

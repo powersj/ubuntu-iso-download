@@ -11,6 +11,7 @@ from .iso import ISO
 URLS = {
     'desktop': url.Desktop,
     'server': url.Server,
+    'netboot': url.Netboot,
     'budgie': url.Budgie,
     'kubuntu': url.Kubuntu,
     'kylin': url.Kylin,
@@ -50,8 +51,10 @@ def parse_args():
         '--mirror',
         default='',
         help=(
-            'mirror for supported desktop and server releases; '
-            'see https://launchpad.net/ubuntu/+cdmirrors'
+            'mirror for supported desktop, server, and netboot releases;'
+            ' for desktop and server see'
+            ' https://launchpad.net/ubuntu/+cdmirrors and'
+            ' https://launchpad.net/ubuntu/+archivemirrors for netboot'
         )
     )
 

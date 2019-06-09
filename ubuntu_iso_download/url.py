@@ -30,6 +30,7 @@ would you please file a bug and let us know that the following:
  * arch: %s
  * url: %s"""
 
+URL_ARCHIVE = 'http://archive.ubuntu.com'
 URL_CDIMAGE = 'http://cdimage.ubuntu.com'
 URL_RELEASES = 'http://releases.ubuntu.com'
 
@@ -177,6 +178,52 @@ class Desktop(URL):
             base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
             filename=self.filename
+        )
+
+
+class Netboot(URL):
+    """Ubuntu Netboot."""
+
+    name = 'Ubuntu Netboot'
+    flavor = 'netboot'
+    variety = 'mini'
+
+    def __init__(self, release, arch='amd64', mirror=''):
+        """Initialize Netboot object.
+
+        Netboot is only supported on amd64 and i386.
+        """
+        super().__init__(release, arch, mirror)
+        supported_arch = ['amd64', 'i386']
+
+        if self.arch not in supported_arch:
+            self._log.error(
+                'The Ubuntu netboot is only supported on amd64 and '
+                'i386.'
+            )
+            sys.exit(1)
+
+    @property
+    def dir(self):
+        """Return URL of ISO directory that has the GPG keys."""
+        return '/'.join(self.url.split('/')[:-2])
+
+    @property
+    def filename(self):
+        """Generate filename of downloadable ISO."""
+        return 'mini.iso'
+
+    @property
+    def url(self):
+        """Return URL to ISO."""
+        return (
+            '{base_url}/ubuntu/dists/{release}/main/installer-{arch}'
+            '/current/images/netboot/{filename}'.format(
+                base_url=self.mirror if self.mirror else URL_ARCHIVE,
+                release=self.release,
+                arch=self.arch,
+                filename=self.filename
+            )
         )
 
 
