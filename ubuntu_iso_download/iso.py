@@ -32,10 +32,10 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 class ISO:
     """Base ISO."""
 
-    def __init__(self, flavor, codename, mirror=None):
+    def __init__(self, flavor, release, mirror=None):
         """Initialize ISO class."""
         self._log = logging.getLogger(__name__)
-        self.release = self.get_ubuntu_release(codename)
+        self.release = self.get_ubuntu_release(release)
         self.target = flavor(self.release, mirror=mirror)
         self.ubuntu_cd_public_gpg = self._read_gpg_key()
 
@@ -154,25 +154,29 @@ class ISO:
 
         return iso.filename
 
-    def get_ubuntu_release(self, codename=None):
+    def get_ubuntu_release(self, release=None):
         """Return specified Ubuntu release or latest LTS.
 
-        This will return the release that aligns with the given codename.
-        If no codename is provided, then the latest released LTS is
-        returned instead.
+        This will return the release that aligns with the given codename
+        or release number. If no release is provided, then the latest
+        released LTS is returned instead.
 
         Args:
-            codename: string, name of Ubuntu release
+            release: string, codename or numeric Ubuntu release value
         Returns:
             UbuntuRelease object
 
         """
         ubuntu = UbuntuReleaseInfo.Data()
 
-        if not codename:
+        if not release:
             return ubuntu.lts
 
-        release = ubuntu.by_codename(codename)
+        if '.' in release:
+            release = ubuntu.by_release(release)
+        else:
+            release = ubuntu.by_codename(release)
+
         if not release.is_supported:
             self._log.error(
                 'Oops: \'%s\' is an unsupported release!'

@@ -32,10 +32,13 @@ def parse_args():
         help='flavor name'
     )
     parser.add_argument(
-        'codename',
+        'release',
         nargs='?',
         default=None,
-        help='Ubuntu release codename (default: latest LTS release)'
+        help=(
+            'Ubuntu release codename (e.g. focal, bionic) or release'
+            ' number (e.g. 20.04, 18.04.3) (default: latest LTS release)'
+        )
     )
     parser.add_argument(
         '--dry-run',
@@ -79,7 +82,7 @@ def launch():
     args = parse_args()
     setup_logging(args.debug)
 
-    iso = ISO(URLS[args.flavor], args.codename, mirror=args.mirror)
+    iso = ISO(URLS[args.flavor], args.release, mirror=args.mirror)
     print(iso)
 
     if args.dry_run:
