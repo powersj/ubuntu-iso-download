@@ -26,6 +26,7 @@ description: |
 
 version: git
 version-script: git rev-parse --short HEAD
+base: core18
 grade: stable
 confinement: strict
 environment:
