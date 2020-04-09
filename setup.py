@@ -67,6 +67,7 @@ setup(
     ],
     keywords=['ubuntu', 'download', 'iso'],
     packages=find_packages(),
+    include_package_data=True,
     entry_points={
         'console_scripts':
             ['ubuntu-iso-download=ubuntu_iso_download.__main__:launch']
