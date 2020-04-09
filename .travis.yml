@@ -1,11 +1,12 @@
 language: python
+dist: bionic
 python:
-  - 3.4
-  - 3.5
   - 3.6
+  - 3.7
+  - 3.8
 install:
   - pip install -r requirements.txt -r requirements-test.txt
 script:
-  - tox
+  - make test
   - python setup.py install
   - ubuntu-iso-download -h

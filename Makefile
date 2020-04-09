@@ -5,9 +5,9 @@ SETUP  := $(PYTHON) setup.py
 
 clean:
 	$(SETUP) clean
-	rm -f .coverage .eggs *.iso *.snap *.tar.bz2
+	rm -f .coverage *.snap *.tar.bz2 *.iso
 	rm -rf build/ dist/ prime/ stage/ htmlcov/ venv/
-	rm -rf *.egg-info .pytest_cache/ .tox/
+	rm -rf *.eggs/ *.egg-info/ .pytest_cache/ .tox/
 	@find . -regex '.*\(__pycache__\|\.py[co]\)' -delete
 
 install:
@@ -23,8 +23,9 @@ snap:
 	snapcraft cleanbuild
 
 test:
-	$(SETUP) test
-	tox
+	pytest --cov=ubuntu_iso_download ubuntu_iso_download
+	flake8 --max-line-length=88 ubuntu_iso_download setup.py
+	black --check .
 
 venv:
 	$(PYTHON) -m virtualenv -p /usr/bin/$(PYTHON) venv

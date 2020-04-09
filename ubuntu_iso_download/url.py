@@ -30,9 +30,9 @@ would you please file a bug and let us know that the following:
  * arch: %s
  * url: %s"""
 
-URL_ARCHIVE = 'http://archive.ubuntu.com'
-URL_CDIMAGE = 'http://cdimage.ubuntu.com'
-URL_RELEASES = 'http://releases.ubuntu.com'
+URL_ARCHIVE = "http://archive.ubuntu.com"
+URL_CDIMAGE = "http://cdimage.ubuntu.com"
+URL_RELEASES = "http://releases.ubuntu.com"
 
 
 class URL:
@@ -44,28 +44,26 @@ class URL:
     filenames, etc.).
     """
 
-    flavor = 'Unknown'
-    name = 'Unknown'
-    variety = 'desktop'
+    flavor = "Unknown"
+    name = "Unknown"
+    variety = "desktop"
 
-    def __init__(self, release, arch='amd64', mirror=''):
+    def __init__(self, release, arch="amd64", mirror=""):
         """Initialize base URL."""
         self._log = logging.getLogger(__name__)
 
         self.arch = arch
         self.release = release
-        self.mirror = mirror.strip('/')
+        self.mirror = mirror.strip("/")
 
     def __repr__(self):
         """Return string representation of ISO."""
-        return '%s ISO on %s' % (
-            self.name, self.release
-        )
+        return "%s ISO on %s" % (self.name, self.release)
 
     @property
     def dir(self):
         """Return URL of ISO directory."""
-        return '/'.join(self.url.split('/')[:-1])
+        return "/".join(self.url.split("/")[:-1])
 
     @property
     def filename(self):
@@ -78,12 +76,12 @@ class URL:
     @property
     def hash_file(self):
         """Return URL to hash file."""
-        return '%s/SHA256SUMS' % self.dir
+        return "%s/SHA256SUMS" % self.dir
 
     @property
     def hash_file_signed(self):
         """Return URL to signed hash file."""
-        return '%s/SHA256SUMS.gpg' % self.dir
+        return "%s/SHA256SUMS.gpg" % self.dir
 
     @property
     def url(self):
@@ -96,50 +94,46 @@ class URL:
 
     def _development_filename(self):
         """Return the development filename."""
-        return '{codename}-{variety}-{arch}.iso'.format(
-            codename=self.release.codename,
-            variety=self.variety,
-            arch=self.arch
+        return "{codename}-{variety}-{arch}.iso".format(
+            codename=self.release.codename, variety=self.variety, arch=self.arch,
         )
 
     def _development_url(self):
         """Return the development url."""
-        return '{base_url}/{flavor}/{path}/{filename}'.format(
+        return "{base_url}/{flavor}/{path}/{filename}".format(
             base_url=URL_CDIMAGE,
             flavor=self.flavor,
-            path='daily-live/current',
-            filename=self.filename
+            path="daily-live/current",
+            filename=self.filename,
         )
 
     def _supported_filename(self):
         """Return supported release filename."""
-        return '{flavor}-{version}-{variety}-{arch}.iso'.format(
+        return "{flavor}-{version}-{variety}-{arch}.iso".format(
             flavor=self.flavor,
             version=self.release.version,
             variety=self.variety,
-            arch=self.arch
+            arch=self.arch,
         )
 
     def _supported_url(self):
         """Return supported release url."""
-        return '{base_url}/{flavor}/{path}/{filename}'.format(
+        return "{base_url}/{flavor}/{path}/{filename}".format(
             base_url=URL_CDIMAGE,
             flavor=self.flavor,
-            path='releases/{codename}/release'.format(
-                codename=self.release.codename,
-            ),
-            filename=self.filename
+            path="releases/{codename}/release".format(codename=self.release.codename),
+            filename=self.filename,
         )
 
 
 class Server(URL):
     """Ubuntu Server."""
 
-    name = 'Ubuntu Server'
-    flavor = 'ubuntu-server'
-    variety = 'live-server'
+    name = "Ubuntu Server"
+    flavor = "ubuntu-server"
+    variety = "live-server"
 
-    def __init__(self, release, arch='amd64', mirror=''):
+    def __init__(self, release, arch="amd64", mirror=""):
         """Initialize Server object.
 
         The released versions's flavor is 'ubuntu' instead of
@@ -152,77 +146,76 @@ class Server(URL):
         super().__init__(release, arch, mirror)
 
         if not self.release.is_dev:
-            self.flavor = 'ubuntu'
+            self.flavor = "ubuntu"
 
         if self.release.year < 18:
-            self.variety = 'server'
+            self.variety = "server"
 
     def _supported_url(self):
         """Return supported release url."""
-        return '{base_url}/{version}/{filename}'.format(
+        return "{base_url}/{version}/{filename}".format(
             base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
-            filename=self.filename
+            filename=self.filename,
         )
 
 
 class Desktop(URL):
     """Ubuntu Desktop."""
 
-    name = 'Ubuntu Desktop'
-    flavor = 'ubuntu'
+    name = "Ubuntu Desktop"
+    flavor = "ubuntu"
 
     def _supported_url(self):
         """Return supported release url."""
-        return '{base_url}/{version}/{filename}'.format(
+        return "{base_url}/{version}/{filename}".format(
             base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
-            filename=self.filename
+            filename=self.filename,
         )
 
 
 class Netboot(URL):
     """Ubuntu Netboot."""
 
-    name = 'Ubuntu Netboot'
-    flavor = 'netboot'
-    variety = 'mini'
+    name = "Ubuntu Netboot"
+    flavor = "netboot"
+    variety = "mini"
 
-    def __init__(self, release, arch='amd64', mirror=''):
+    def __init__(self, release, arch="amd64", mirror=""):
         """Initialize Netboot object.
 
         Netboot is only supported on amd64 and i386.
         """
         super().__init__(release, arch, mirror)
-        supported_arch = ['amd64', 'i386']
+        supported_arch = ["amd64", "i386"]
 
         if self.arch not in supported_arch:
             self._log.error(
-                'The Ubuntu netboot is only supported on amd64 and '
-                'i386.'
+                "The Ubuntu netboot is only supported on amd64 and " "i386."
             )
             sys.exit(1)
 
     @property
     def dir(self):
         """Return URL of ISO directory that has the GPG keys."""
-        return '/'.join(self.url.split('/')[:-2])
+        return "/".join(self.url.split("/")[:-2])
 
     @property
     def filename(self):
         """Generate filename of downloadable ISO."""
-        return 'mini.iso'
+        return "mini.iso"
 
     @property
     def url(self):
         """Return URL to ISO."""
         return (
-            '{base_url}/ubuntu/dists/{release}/main/installer-{arch}'
-            '/current/images/netboot/{filename}'.format(
+            "{base_url}/ubuntu/dists/{release}/main/installer-{arch}"
+            "/current/images/netboot/{filename}".format(
                 base_url=self.mirror if self.mirror else URL_ARCHIVE,
                 release=self.release,
                 arch=self.arch,
-                filename=self.filename
+                filename=self.filename,
             )
         )
 
@@ -230,10 +223,10 @@ class Netboot(URL):
 class Budgie(URL):
     """Budgie Desktop Flavor."""
 
-    name = 'Ubuntu Budgie'
-    flavor = 'ubuntu-budgie'
+    name = "Ubuntu Budgie"
+    flavor = "ubuntu-budgie"
 
-    def __init__(self, release, arch='amd64', mirror=''):
+    def __init__(self, release, arch="amd64", mirror=""):
         """Initialize Budgie object.
 
         Budgie was not supported until the 18.04 LTS.
@@ -242,8 +235,7 @@ class Budgie(URL):
 
         if self.release.year < 18:
             self._log.error(
-                'The Ubuntu Budgie flavor was not supported until'
-                ' the 18.04 release'
+                "The Ubuntu Budgie flavor was not supported until" " the 18.04 release"
             )
             sys.exit(1)
 
@@ -251,39 +243,39 @@ class Budgie(URL):
 class Kubuntu(URL):
     """Kubuntu Desktop Flavor."""
 
-    name = 'Kubuntu'
-    flavor = 'kubuntu'
+    name = "Kubuntu"
+    flavor = "kubuntu"
 
 
 class Kylin(URL):
     """Kylin Desktop Flavor."""
 
-    name = 'Ubuntu Kylin'
-    flavor = 'ubuntukylin'
+    name = "Ubuntu Kylin"
+    flavor = "ubuntukylin"
 
 
 class Lubuntu(URL):
     """Lubuntu Desktop Flavor."""
 
-    name = 'Lubuntu'
-    flavor = 'lubuntu'
+    name = "Lubuntu"
+    flavor = "lubuntu"
 
 
 class Mate(URL):
     """Mate Desktop Flavor."""
 
-    name = 'Ubuntu MATE'
-    flavor = 'ubuntu-mate'
+    name = "Ubuntu MATE"
+    flavor = "ubuntu-mate"
 
 
 class Studio(URL):
     """Studio Desktop Flavor."""
 
-    name = 'Ubuntu Studio'
-    flavor = 'ubuntustudio'
-    variety = 'dvd'
+    name = "Ubuntu Studio"
+    flavor = "ubuntustudio"
+    variety = "dvd"
 
-    def __init__(self, release, arch='amd64', mirror=''):
+    def __init__(self, release, arch="amd64", mirror=""):
         """Initialize Studio object.
 
         The 18.04 release was not known as an LTS release.
@@ -291,22 +283,22 @@ class Studio(URL):
         super().__init__(release, arch, mirror)
 
         if self.release.year == 18 and self.release.month == 4:
-            self._log.debug('18.04 was not an LTS for Ubuntu Studio.')
+            self._log.debug("18.04 was not an LTS for Ubuntu Studio.")
             self.release.lts = False
-            self.release.version = '18.04'
+            self.release.version = "18.04"
 
     def _development_url(self):
         """Return the development url."""
-        return '{base_url}/{flavor}/{path}/{filename}'.format(
+        return "{base_url}/{flavor}/{path}/{filename}".format(
             base_url=URL_CDIMAGE,
             flavor=self.flavor,
-            path='%s/current' % self.variety,
-            filename=self.filename
+            path="%s/current" % self.variety,
+            filename=self.filename,
         )
 
 
 class Xubuntu(URL):
     """Xubuntu Desktop Flavor."""
 
-    name = 'Xubuntu'
-    flavor = 'xubuntu'
+    name = "Xubuntu"
+    flavor = "xubuntu"

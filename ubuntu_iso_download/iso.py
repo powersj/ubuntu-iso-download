@@ -45,19 +45,17 @@ class ISO:
 
     def _read_gpg_key(self):
         """Read the public GPG key used for signing CDs."""
-        keyring_path = 'usr/share/keyrings/ubuntu-archive-keyring.gpg'
-        if os.getenv('SNAP'):
-            keyring_path = os.path.join(os.getenv('SNAP'), keyring_path)
+        keyring_path = "usr/share/keyrings/ubuntu-archive-keyring.gpg"
+        if os.getenv("SNAP"):
+            keyring_path = os.path.join(os.getenv("SNAP"), keyring_path)
         else:
-            keyring_path = os.path.join('/', keyring_path)
+            keyring_path = os.path.join("/", keyring_path)
 
         if not os.path.isfile(keyring_path):
-            self._log.error(
-                'Oops: public GPG key not found at: %s', keyring_path
-            )
+            self._log.error("Oops: public GPG key not found at: %s", keyring_path)
             sys.exit(1)
 
-        with open(keyring_path, 'rb') as keyring:
+        with open(keyring_path, "rb") as keyring:
             gpg_key = keyring.read()
 
         return gpg_key
@@ -66,21 +64,21 @@ class ISO:
         """Download and verify the hash for the ISO."""
         hashes = requests.get(self.target.hash_file).content
         if not self.verify_gpg_signature(hashes, self.target.hash_file_signed):
-            self._log.error('Oops: GPG signature verification failed')
+            self._log.error("Oops: GPG signature verification failed")
             sys.exit(1)
 
-        target_hash = ''
-        if self.target.variety == 'mini':
-            for entry in hashes.decode('utf-8').split('\n'):
+        target_hash = ""
+        if self.target.variety == "mini":
+            for entry in hashes.decode("utf-8").split("\n"):
                 if self.target.filename in entry:
-                    target_hash = entry.split(' ')[0]
+                    target_hash = entry.split(" ")[0]
         else:
-            for entry in hashes.decode('utf-8').split('\n'):
+            for entry in hashes.decode("utf-8").split("\n"):
                 if self.target.variety in entry and self.target.arch in entry:
-                    target_hash = entry.split(' ')[0]
+                    target_hash = entry.split(" ")[0]
 
         if not target_hash:
-            self._log.error('Oops: No ISO hash found')
+            self._log.error("Oops: No ISO hash found")
 
         self._log.debug(target_hash)
         return target_hash
@@ -93,13 +91,13 @@ class ISO:
         """
         local_iso = self.download_iso(self.target)
 
-        self._log.debug('Verifying SHA-256')
+        self._log.debug("Verifying SHA-256")
         if self.hash() != self.calc_sha256(local_iso):
-            self._log.error('Oops: SHA-256 hash mismatch!')
+            self._log.error("Oops: SHA-256 hash mismatch!")
             self.remove_file(local_iso)
             sys.exit(1)
 
-        self._log.debug('Download complete and successfully verified')
+        self._log.debug("Download complete and successfully verified")
 
     def calc_sha256(self, filename):
         """Calculate SHA256 of a given filename.
@@ -111,7 +109,7 @@ class ISO:
 
         """
         sha256 = hashlib.sha256()
-        with open(filename, 'rb') as file:
+        with open(filename, "rb") as file:
             while True:
                 data = file.read(65536)
                 if not data:
@@ -135,17 +133,15 @@ class ISO:
             string, ISO filename
 
         """
-        self._log.info('Downloading %s from %s', iso.filename, iso.dir)
+        self._log.info("Downloading %s from %s", iso.filename, iso.dir)
         response = requests.get(iso.url, stream=True)
         chunk_size = 1024 * 1024
 
         progress = tqdm(
-            total=int(response.headers['Content-Length']),
-            unit='B',
-            unit_scale=True
+            total=int(response.headers["Content-Length"]), unit="B", unit_scale=True,
         )
 
-        with open(iso.filename, 'wb') as file:
+        with open(iso.filename, "wb") as file:
             for chunk in response.iter_content(chunk_size=chunk_size):
                 progress.update(len(chunk))
                 file.write(chunk)
@@ -172,17 +168,16 @@ class ISO:
         if not release:
             return ubuntu.lts
 
-        if '.' in release:
+        if "." in release:
             release = ubuntu.by_release(release)
         else:
             release = ubuntu.by_codename(release)
 
         if not release.is_supported:
             self._log.error(
-                'Oops: \'%s\' is an unsupported release!'
-                ' Please choose from:\n%s',
+                "Oops: '%s' is an unsupported release!" " Please choose from:\n%s",
                 release.codename,
-                [release.codename for release in ubuntu.supported]
+                [release.codename for release in ubuntu.supported],
             )
             sys.exit(1)
 
@@ -223,8 +218,8 @@ class ISO:
             gpg = gnupg.GPG(gnupghome=directory_name)
             gpg.import_keys(self.ubuntu_cd_public_gpg)
 
-            sig_file = os.path.join(directory_name, 'signature.gpg')
-            with open(sig_file, 'wb') as f:
+            sig_file = os.path.join(directory_name, "signature.gpg")
+            with open(sig_file, "wb") as f:
                 f.write(requests.get(signature_url).content)
 
             return gpg.verify_data(sig_file, data)
