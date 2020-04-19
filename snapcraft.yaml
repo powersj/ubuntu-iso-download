@@ -58,7 +58,3 @@ parts:
             - gnupg
         stage:
             - usr/bin/gpg
-    ubuntu-release-info:
-        plugin: python
-        source: https://github.com/powersj/ubuntu-release-info
-        source-type: git
