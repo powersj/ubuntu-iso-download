@@ -59,3 +59,5 @@ parts:
             - libassuan0
         stage:
             - usr/bin/gpg
+            - usr/lib/x86_64-linux-gnu/libassuan.so.0
+            - usr/lib/x86_64-linux-gnu/libassuan.so.0.8.1
