@@ -56,5 +56,6 @@ parts:
         plugin: nil
         stage-packages:
             - gnupg
+            - libassuan0
         stage:
             - usr/bin/gpg
