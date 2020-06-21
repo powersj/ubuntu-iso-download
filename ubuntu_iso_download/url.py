@@ -185,15 +185,17 @@ class Netboot(URL):
     def __init__(self, release, arch="amd64", mirror=""):
         """Initialize Netboot object.
 
-        Netboot is only supported on amd64 and i386.
+        Netboot is only supported on amd64 and i386, before 20.04.
         """
         super().__init__(release, arch, mirror)
         supported_arch = ["amd64", "i386"]
 
         if self.arch not in supported_arch:
-            self._log.error(
-                "The Ubuntu netboot is only supported on amd64 and " "i386."
-            )
+            self._log.error("The Ubuntu netboot is only supported on amd64 and i386.")
+            sys.exit(1)
+
+        if self.release.year >= 20:
+            self._log.error("The netboot ISO was discontinued after 19.10.")
             sys.exit(1)
 
     @property
@@ -235,7 +237,7 @@ class Budgie(URL):
 
         if self.release.year < 18:
             self._log.error(
-                "The Ubuntu Budgie flavor was not supported until" " the 18.04 release"
+                "The Ubuntu Budgie flavor was not supported until the 18.04 release"
             )
             sys.exit(1)
 
