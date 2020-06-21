@@ -24,11 +24,10 @@ description: |
     downloaded, the SHA-256 hash is calculated and compared to the
     expected value. If a mismatch occurs the download ISO is deleted.
 
-version: git
-version-script: git rev-parse --short HEAD
 base: core18
 grade: stable
 confinement: strict
+adopt-info: ubuntu-iso-download
 architectures:
   - build-on: amd64
 environment:
@@ -48,6 +47,11 @@ parts:
         plugin: python
         source: https://github.com/powersj/ubuntu-iso-download
         source-type: git
+        override-pull: |
+            snapcraftctl pull
+            DATE="$(date +%Y.%m.%d)"
+            GIT="$(git rev-parse --short HEAD)"
+            snapcraftctl set-version "${DATE}+git${GIT}"
     keyring:
         plugin: nil
         stage-packages:
