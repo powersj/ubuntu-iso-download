@@ -47,6 +47,10 @@ parts:
         plugin: python
         source: https://github.com/powersj/ubuntu-iso-download
         source-type: git
+        python-packages:
+            - pip
+            - setuptools
+            - wheel
         override-pull: |
             snapcraftctl pull
             DATE="$(date +%Y.%m.%d)"
