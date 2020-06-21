@@ -24,7 +24,7 @@ description: |
     downloaded, the SHA-256 hash is calculated and compared to the
     expected value. If a mismatch occurs the download ISO is deleted.
 
-base: core18
+base: core20
 grade: stable
 confinement: strict
 adopt-info: ubuntu-iso-download
@@ -66,4 +66,4 @@ parts:
         stage:
             - usr/bin/gpg
             - usr/lib/x86_64-linux-gnu/libassuan.so.0
-            - usr/lib/x86_64-linux-gnu/libassuan.so.0.8.1
+            - usr/lib/x86_64-linux-gnu/libassuan.so.0.8.3
