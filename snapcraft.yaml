@@ -29,6 +29,8 @@ version-script: git rev-parse --short HEAD
 base: core18
 grade: stable
 confinement: strict
+architectures:
+  - build-on: amd64
 environment:
     LC_ALL: C.UTF-8
     LANG: C.UTF-8
