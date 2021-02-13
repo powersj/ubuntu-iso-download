@@ -68,16 +68,23 @@ class ISO:
             sys.exit(1)
 
         target_hash = ""
-        for entry in hashes.decode("utf-8").split("\n"):
-            if self.target.filename in entry:
-                target_hash = entry.split(" ")[0]
-                continue
+        filename = ""
+        if self.target.variety == "mini":
+            for entry in hashes.decode("utf-8").split("\n"):
+                if "mini.iso" in entry:
+                    target_hash = entry.split("  ")[0]
+                    filename = entry.split("  ")[1].strip("./")
+        else:
+            for entry in hashes.decode("utf-8").split("\n"):
+                # want to pick the latest ISO in the event of multiple releases
+                if self.target.variety in entry and self.target.arch in entry:
+                    target_hash = entry.split(" ")[0]
+                    filename = entry.split(" ")[1].strip("*")
 
         if not target_hash:
             self._log.error("Oops: No ISO hash found")
 
-        self._log.debug(target_hash)
-        return target_hash
+        return filename, target_hash
 
     def download(self):
         """Download the ISO, calculate hash, and and verify it.
@@ -85,10 +92,12 @@ class ISO:
         If the expected hash does not match the local hash the
         downloaded ISO will be deleted.
         """
-        local_iso = self.download_iso(self.target)
+        filename, target_hash = self.hash()
+        local_iso = self.download_iso(self.target, filename)
 
         self._log.debug("Verifying SHA-256")
-        if self.hash() != self.calc_sha256(local_iso):
+        self._log.debug(target_hash)
+        if target_hash != self.calc_sha256(local_iso):
             self._log.error("Oops: SHA-256 hash mismatch!")
             self.remove_file(local_iso)
             sys.exit(1)
@@ -115,7 +124,7 @@ class ISO:
         self._log.debug(sha256.hexdigest())
         return sha256.hexdigest()
 
-    def download_iso(self, iso):
+    def download_iso(self, iso, filename):
         """Download the ISO with progress bar.
 
         This uses tqdm to create a progress bar to show the status of
@@ -129,22 +138,26 @@ class ISO:
             string, ISO filename
 
         """
-        self._log.info("Downloading %s from %s", iso.filename, iso.dir)
-        response = requests.get(iso.url, stream=True)
+        url = "%s/%s" % (iso.url, filename)
+        if self.target.variety == "mini":
+            filename = "mini.iso"
+
+        self._log.info("Downloading %s from %s", filename, iso.url)
+        response = requests.get(url, stream=True)
         chunk_size = 1024 * 1024
 
         progress = tqdm(
             total=int(response.headers["Content-Length"]), unit="B", unit_scale=True,
         )
 
-        with open(iso.filename, "wb") as file:
+        with open(filename, "wb") as file:
             for chunk in response.iter_content(chunk_size=chunk_size):
                 progress.update(len(chunk))
                 file.write(chunk)
 
         progress.close()
 
-        return iso.filename
+        return filename
 
     def get_ubuntu_release(self, release=None):
         """Return specified Ubuntu release or latest LTS.

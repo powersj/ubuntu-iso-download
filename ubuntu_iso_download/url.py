@@ -61,27 +61,14 @@ class URL:
         return "%s ISO on %s" % (self.name, self.release)
 
     @property
-    def dir(self):
-        """Return URL of ISO directory."""
-        return "/".join(self.url.split("/")[:-1])
-
-    @property
-    def filename(self):
-        """Generate filename of downloadable ISO."""
-        if self.release.is_dev:
-            return self._development_filename()
-
-        return self._supported_filename()
-
-    @property
     def hash_file(self):
         """Return URL to hash file."""
-        return "%s/SHA256SUMS" % self.dir
+        return "%s/SHA256SUMS" % self.url
 
     @property
     def hash_file_signed(self):
         """Return URL to signed hash file."""
-        return "%s/SHA256SUMS.gpg" % self.dir
+        return "%s/SHA256SUMS.gpg" % self.url
 
     @property
     def url(self):
@@ -92,37 +79,18 @@ class URL:
 
         return url
 
-    def _development_filename(self):
-        """Return the development filename."""
-        return "{codename}-{variety}-{arch}.iso".format(
-            codename=self.release.codename, variety=self.variety, arch=self.arch,
-        )
-
     def _development_url(self):
         """Return the development url."""
-        return "{base_url}/{flavor}/{path}/{filename}".format(
-            base_url=URL_CDIMAGE,
-            flavor=self.flavor,
-            path="daily-live/current",
-            filename=self.filename,
-        )
-
-    def _supported_filename(self):
-        """Return supported release filename."""
-        return "{flavor}-{version}-{variety}-{arch}.iso".format(
-            flavor=self.flavor,
-            version=self.release.version,
-            variety=self.variety,
-            arch=self.arch,
+        return "{base_url}/{flavor}/{path}".format(
+            base_url=URL_CDIMAGE, flavor=self.flavor, path="daily-live/current",
         )
 
     def _supported_url(self):
         """Return supported release url."""
-        return "{base_url}/{flavor}/{path}/{filename}".format(
+        return "{base_url}/{flavor}/{path}".format(
             base_url=URL_CDIMAGE,
             flavor=self.flavor,
             path="releases/{codename}/release".format(codename=self.release.codename),
-            filename=self.filename,
         )
 
 
@@ -153,10 +121,9 @@ class Server(URL):
 
     def _supported_url(self):
         """Return supported release url."""
-        return "{base_url}/{version}/{filename}".format(
+        return "{base_url}/{version}".format(
             base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
-            filename=self.filename,
         )
 
 
@@ -168,10 +135,9 @@ class Desktop(URL):
 
     def _supported_url(self):
         """Return supported release url."""
-        return "{base_url}/{version}/{filename}".format(
+        return "{base_url}/{version}".format(
             base_url=self.mirror if self.mirror else URL_RELEASES,
             version=self.release.version,
-            filename=self.filename,
         )
 
 
@@ -204,20 +170,14 @@ class Netboot(URL):
         return "/".join(self.url.split("/")[:-2])
 
     @property
-    def filename(self):
-        """Generate filename of downloadable ISO."""
-        return "mini.iso"
-
-    @property
     def url(self):
         """Return URL to ISO."""
         return (
             "{base_url}/ubuntu/dists/{release}/main/installer-{arch}"
-            "/current/images/netboot/{filename}".format(
+            "/current/images".format(
                 base_url=self.mirror if self.mirror else URL_ARCHIVE,
                 release=self.release,
                 arch=self.arch,
-                filename=self.filename,
             )
         )
 
@@ -291,11 +251,8 @@ class Studio(URL):
 
     def _development_url(self):
         """Return the development url."""
-        return "{base_url}/{flavor}/{path}/{filename}".format(
-            base_url=URL_CDIMAGE,
-            flavor=self.flavor,
-            path="%s/current" % self.variety,
-            filename=self.filename,
+        return "{base_url}/{flavor}/{path}".format(
+            base_url=URL_CDIMAGE, flavor=self.flavor, path="%s/current" % self.variety,
         )
 
 

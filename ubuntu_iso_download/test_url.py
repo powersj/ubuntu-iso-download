@@ -92,9 +92,7 @@ def test_desktop_stable():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Desktop ISO on %s" % release
-    assert url.url == (
-        "http://releases.ubuntu.com/18.04/ubuntu-18.04-desktop-amd64.iso"
-    )
+    assert url.url == ("http://releases.ubuntu.com/18.04")
 
 
 def test_desktop_devel():
@@ -107,9 +105,7 @@ def test_desktop_devel():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Desktop ISO on %s" % release
-    assert url.url == (
-        "http://cdimage.ubuntu.com/ubuntu/" "daily-live/current/disco-desktop-amd64.iso"
-    )
+    assert url.url == ("http://cdimage.ubuntu.com/ubuntu/" "daily-live/current")
 
 
 def test_server_stable_old():
@@ -122,7 +118,7 @@ def test_server_stable_old():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Server ISO on %s" % release
-    assert url.url == ("http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso")
+    assert url.url == ("http://releases.ubuntu.com/16.04")
 
 
 def test_server_stable():
@@ -135,9 +131,7 @@ def test_server_stable():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Server ISO on %s" % release
-    assert url.url == (
-        "http://releases.ubuntu.com/18.04/ubuntu-18.04-live-server-amd64.iso"
-    )
+    assert url.url == ("http://releases.ubuntu.com/18.04")
 
 
 def test_server_devel():
@@ -150,10 +144,7 @@ def test_server_devel():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Server ISO on %s" % release
-    assert url.url == (
-        "http://cdimage.ubuntu.com/ubuntu-server/"
-        "daily-live/current/disco-live-server-amd64.iso"
-    )
+    assert url.url == ("http://cdimage.ubuntu.com/ubuntu-server/daily-live/current")
 
 
 def test_netboot_stable():
@@ -166,13 +157,9 @@ def test_netboot_stable():
     assert url.release == release
     assert url.mirror == ""
     assert str(url) == "Ubuntu Netboot ISO on %s" % release
-    assert url.dir == (
-        "http://archive.ubuntu.com/ubuntu/dists/bionic/main/"
-        "installer-amd64/current/images"
-    )
     assert url.url == (
         "http://archive.ubuntu.com/ubuntu/dists/bionic/main/"
-        "installer-amd64/current/images/netboot/mini.iso"
+        "installer-amd64/current/images"
     )
 
 
@@ -188,7 +175,7 @@ def test_netboot_devel():
     assert str(url) == "Ubuntu Netboot ISO on %s" % release
     assert url.url == (
         "http://archive.ubuntu.com/ubuntu/dists/disco/main/"
-        "installer-i386/current/images/netboot/mini.iso"
+        "installer-i386/current/images"
     )
 
 
@@ -340,9 +327,7 @@ def test_studio_devel():
     assert url.arch == arch
     assert url.release == release
     assert str(url) == "Ubuntu Studio ISO on %s" % release
-    assert url.url == (
-        "http://cdimage.ubuntu.com/ubuntustudio" "/dvd/current/disco-dvd-amd64.iso"
-    )
+    assert url.url == ("http://cdimage.ubuntu.com/ubuntustudio/dvd/current")
 
 
 def test_xubuntu_stable():
