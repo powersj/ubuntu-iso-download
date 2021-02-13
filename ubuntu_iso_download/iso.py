@@ -68,14 +68,10 @@ class ISO:
             sys.exit(1)
 
         target_hash = ""
-        if self.target.variety == "mini":
-            for entry in hashes.decode("utf-8").split("\n"):
-                if self.target.filename in entry:
-                    target_hash = entry.split(" ")[0]
-        else:
-            for entry in hashes.decode("utf-8").split("\n"):
-                if self.target.variety in entry and self.target.arch in entry:
-                    target_hash = entry.split(" ")[0]
+        for entry in hashes.decode("utf-8").split("\n"):
+            if self.target.filename in entry:
+                target_hash = entry.split(" ")[0]
+                continue
 
         if not target_hash:
             self._log.error("Oops: No ISO hash found")
