@@ -20,7 +20,7 @@ publish:
 	twine upload dist/*
 
 snap:
-	snapcraft cleanbuild
+	snapcraft
 
 test:
 	pytest --cov=ubuntu_iso_download ubuntu_iso_download
