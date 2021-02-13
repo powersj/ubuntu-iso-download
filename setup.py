@@ -38,7 +38,7 @@ PKGS, LINKS = gather_deps()
 
 setup(
     name="ubuntu-iso-download",
-    version="20.1",
+    version="21.1",
     description="Download the latest Ubuntu ISOs.",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
