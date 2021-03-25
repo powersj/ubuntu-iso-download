@@ -1,5 +1,5 @@
 python-gnupg==0.4.4
-pyyaml==4.2b1
+pyyaml==5.4
 requests==2.21.0
 tqdm==4.26.0
 ubuntu-release-info==20.2
