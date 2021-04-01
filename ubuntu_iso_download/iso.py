@@ -24,9 +24,9 @@ from tqdm import tqdm
 
 from ubuntu_release_info import data as UbuntuReleaseInfo
 
-logging.getLogger("gnupg").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("gnupg").setLevel(logging.ERROR)
+logging.getLogger("urllib3").setLevel(logging.ERROR)
+logging.getLogger("requests").setLevel(logging.ERROR)
 
 
 class ISO:
